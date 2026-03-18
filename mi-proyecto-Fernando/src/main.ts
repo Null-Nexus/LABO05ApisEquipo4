@@ -138,7 +138,7 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
   
   // 1. [LOG]: Imprime en consola un mensaje avisando que vas a buscar 
   // los comentarios del 'postId' recibido. Usa estilos %c si quieres.
-  console.log(`%c🔍 Buscando comentarios del post ${postId}`, "color: cyan;");
+  console.log(`%c Buscando comentarios del post ${postId}`, "color: cyan;");
 
   try {
     // 2. [PETICIÓN]: Crea una constante 'response'.
@@ -148,7 +148,7 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
     // 3. [VALIDACIÓN]: Si la respuesta (response.ok) es falsa, 
     // lanza un error (throw new Error) indicando que falló la carga.
     if (!response.ok) {
-      throw new Error("❌ Error al cargar los comentarios");
+      throw new Error("Error al cargar los comentarios");
     }
 
     // 4. [TRADUCCIÓN]: Crea una constante 'data'.
@@ -157,7 +157,7 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
 
     // 5. [PROCESAMIENTO]: Una vez tengas los datos, imprime cuántos comentarios llegaron.
     // Tip: Usa data.length.
-    console.log(`✅ Llegaron ${data.length} comentarios`);
+    console.log(`Llegaron ${data.length} comentarios`);
 
     // 6. [RECORRIDO]: Usa un método de array (como .forEach) para recorrer la lista.
     // Dentro, imprime solo el 'email' de cada comentario para verificar el tipado.
