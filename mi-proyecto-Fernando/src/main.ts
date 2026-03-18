@@ -119,39 +119,56 @@ const createNewPost = async (): Promise<void> => {
  * 2. Recuerda que la respuesta es una LISTA (Array) de objetos Comment.
  * 3. Usa un bucle o método de array (como .forEach) para mostrar los datos.
  */
+
 /**
  * RETO DE LABORATORIO: Obtener recursos anidados (Comments)
  * * Instrucciones para el estudiante:
  * Sigue los pasos numerados para completar la función.
  */
+
+interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+
 const fetchCommentsByPost = async (postId: number): Promise<void> => {
   
   // 1. [LOG]: Imprime en consola un mensaje avisando que vas a buscar 
   // los comentarios del 'postId' recibido. Usa estilos %c si quieres.
+  console.log(`%c🔍 Buscando comentarios del post ${postId}`, "color: cyan;");
 
   try {
     // 2. [PETICIÓN]: Crea una constante 'response'.
     // Usa 'fetch' con backticks para unir API_URL + /posts/ + postId + /comments.
-    
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`);
 
     // 3. [VALIDACIÓN]: Si la respuesta (response.ok) es falsa, 
     // lanza un error (throw new Error) indicando que falló la carga.
-
+    if (!response.ok) {
+      throw new Error("❌ Error al cargar los comentarios");
+    }
 
     // 4. [TRADUCCIÓN]: Crea una constante 'data'.
     // Usa 'await response.json()' y asígnale el tipo 'Comment[]' (Array de comentarios).
-    
+    const data: Comment[] = await response.json();
 
     // 5. [PROCESAMIENTO]: Una vez tengas los datos, imprime cuántos comentarios llegaron.
     // Tip: Usa data.length.
-
+    console.log(`✅ Llegaron ${data.length} comentarios`);
 
     // 6. [RECORRIDO]: Usa un método de array (como .forEach) para recorrer la lista.
     // Dentro, imprime solo el 'email' de cada comentario para verificar el tipado.
+    data.forEach(comment => {
+      console.log(comment.email);
+    });
 
 
   } catch (error) {
     // 7. [ERRORES]: Captura el error y muéstralo con console.error.
+    console.error("🚨 Error al obtener comentarios:", error);
   }
 };
 
@@ -185,7 +202,7 @@ const SUPABASE_KEY: string = "sb_publishable_3wy1WecMJSUAh3DFCyPVGA_-FNLIIAj";
  * Creamos el objeto que nos permite hablar con la base de datos.
  */
 
-const supabase = createClient("https://wyqzpcqqurxhznqiqkpl.supabase.co", "sb_publishable_3wy1WecMJSUAh3DFCyPVGA_-FNLIIAj");
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /**
  * PASO 3: INTERFAZ DE DATOS
@@ -249,7 +266,7 @@ const runLaboratory = async () => {
   await fetchSinglePost(POST_ID_TO_SEARCH); 
   await createNewPost();    
   await getEstudiante();                
-  
+  await fetchCommentsByPost(POST_ID_TO_SEARCH);
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
 };
 
