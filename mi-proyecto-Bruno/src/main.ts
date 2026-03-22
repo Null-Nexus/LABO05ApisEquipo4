@@ -219,7 +219,7 @@ interface Tutor {
   id_tutor: number;    
   nombre: string;       
   apellido: string;
-  tiempo_serv: Date; 
+  tiempo_serv: string; 
 }
 
 /**
@@ -232,7 +232,7 @@ const getTutor = async (): Promise<void> => {
   // 1. .from('autos') -> Selecciona la tabla de tu imagen.
   // 2. .select('*')   -> Pide todas las columnas de esa tabla.
 
-  const {data, error} = await supabase;
+  const {data, error} = await supabase
     .from('tutor')
     .select('*');
 
