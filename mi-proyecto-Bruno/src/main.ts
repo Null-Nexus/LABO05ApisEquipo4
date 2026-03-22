@@ -268,9 +268,5 @@ const runLaboratory = async () => {
   console.log("%c --- EXPERIMENTO FINALIZADO ---", "background: #222; color: #bada55; padding: 5px;");
 };
 
-
-
-
-
 // Disparamos todo el proceso.
 runLaboratory();
