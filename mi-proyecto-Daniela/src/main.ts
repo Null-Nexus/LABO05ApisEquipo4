@@ -1,4 +1,4 @@
-
+import { createClient } from '@supabase/supabase-js';
 /**
  * PASO 1: DATOS PRIMITIVOS (Configuración base)
  * Definimos valores básicos con tipado explícito para que el compilador sepa 
@@ -149,10 +149,42 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
 
     // 6. [RECORRIDO]: Usa un método de array (como .forEach) para recorrer la lista.
     // Dentro, imprime solo el 'email' de cada comentario para verificar el tipado.
+    const API_URL = "https://jsonplaceholder.typicode.com";
+
+type Comment = {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+};
+
+const fetchCommentsByPost = async (postId: number): Promise<void> => {
+  console.log(`Buscando comentarios del post ${postId}...`);
+
+  try {
+    const response = await fetch(`${API_URL}/posts/${postId}/comments`);
+
+    if (!response.ok) {
+      throw new Error("Error al cargar los comentarios");
+    }
+
+    const data: Comment[] = await response.json();
+
+    console.log(`Llegaron ${data.length} comentarios`);
+
+    data.forEach((comment) => {
+      console.log(comment.email);
+    });
+
+
+
+
 
 
   } catch (error) {
     // 7. [ERRORES]: Captura el error y muéstralo con console.error.
+      console.error("Ocurrió un error:", error);
   }
 };
 
@@ -162,6 +194,12 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
  * Dentro de tu función 'runLaboratory', no olvides añadir:
  * await fetchCommentsByPost(POST_ID_TO_SEARCH);
  */
+// ejecución
+const runLaboratory = async () => {
+  await fetchCommentsByPost(1);
+};
+
+runLaboratory();
 
 /*
     ################################################################################
@@ -178,8 +216,8 @@ const fetchCommentsByPost = async (postId: number): Promise<void> => {
  * PASO 1: CONFIGURACIÓN DE CONEXIÓN
  * Sustituye estos valores con los de tu proyecto en Supabase (Project Settings > API)
  */
-const SUPABASE_URL: string = "TU_URL_DE_SUPABASE";
-const SUPABASE_KEY: string = "TU_KEY";
+const SUPABASE_URL: string = "https://wyqzpcqqurxhznqiqkpl.supabase.co";
+const SUPABASE_KEY: string = "http://sb_publishable_3wy1WecMJSUAh3DFCyPVGA_-FNLIIAj";
 
 /**
  * PASO 2: INICIALIZACIÓN DEL CLIENTE
@@ -187,16 +225,19 @@ const SUPABASE_KEY: string = "TU_KEY";
  */
 
 // DESCOMENTAR LA LINEA DE ABAJO
-// const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /**
  * PASO 3: INTERFAZ DE DATOS
  * Definimos la estructura exacta de la tabla que vemos en tu imagen.
  */
-interface Auto {
-  id_auto: number;       // Columna ID (Primary Key)
-  patente: string;       // Columna Patente (Varchar)
-  id_propietario: number; // Columna ID Propietario (Foreign Key)
+interface asesoria {
+  id_asesoria: int;       // Columna ID (Primary Key)
+  fecha: date;       // Columna Patente (Varchar)
+  descripccion: varchar; // Columna ID Propietario (Foreign Key)
+  materia: varchar;
+  tutor_id: int;
+  salon_id: int;
 }
 
 /**
@@ -211,26 +252,26 @@ const getAutos = async (): Promise<void> => {
 
   // DESCOMENTAR ESTAS LINEAS QUE SIGUEN
 
-  /*const { data, error } = await supabase
-    .from('autos')   
+  const { data, error } = await supabase
+    .from('asesorias')   
     .select('*');
 
   // Si Supabase responde con un error (ej: tabla inexistente o sin permisos RLS)
   if (error) {
-    console.error("❌ Error al obtener los autos:", error.message);
+    console.error("❌ Error al obtener las asesorias:", error.message);
     return;
   }
 
   // Si todo sale bien, 'data' contiene el array de objetos.
   // Usamos 'as Auto[]' para decirle a TS que confíe en nuestra interfaz.
-  const listaAutos: Auto[] = data as Auto[];
+  const listaasesoria: asesoria[] = data as asesoria[];
 
   // Mostramos el resultado final en la consola del navegador
-  console.log("✅ Lista de autos recibida:");
-  console.table(listaAutos); 
+  console.log("✅ Lista de asesoria recibida:");
+  console.table(listaasesoria); 
 
-  HASTA AQUI DEBES DESCOMENTAR
-  */ 
+  //HASTA AQUI DEBES DESCOMENTAR
+  
 };
 
 
